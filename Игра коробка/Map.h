@@ -6,7 +6,7 @@ const int WIDTH_MAP = 10;
 std::string TileMap[HEIGHT_MAP] = {
 	"0000000000",
 	"0        0",
-	"0     0  0",
+	"0        0",
 	"0        0",
 	"0        0",
 	"0        0",
