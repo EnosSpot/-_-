@@ -110,7 +110,7 @@ public:
 	}
 	bool nextblock(float dx,float dy) {
 		if (dx > 0) return ((TileMap[yb / 64][(xb + 64) / 64] == '0'));
-		if (dx < 0) return ((TileMap[yb / 64][(xb - 64) / 64] != '0'));
+		if (dx < 0) return ((TileMap[yb / 64][(xb - 64) / 64] == '0'));
 		if (dy > 0) return ((TileMap[(yb + 64) / 64][xb / 64] == '0'));
 		if (dy < 0) return ((TileMap[(yb - 64) / 64][xb / 64] == '0'));
 	}
