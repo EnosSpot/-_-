@@ -5,13 +5,24 @@
 #include <vector>
 #include "Classes.h"
 #include "menu.h"
+int changecamerax;
+int changecameray;
 using namespace sf;
 int main()
 {
-	Box korobka(192,320);
-	Player eblo("GG.png", 64, 384, 100, 129);
+	Box korobka(128,320);
+	Box korobka1(768, 128);
+	Box korobka2(1088, 576);
+	Box korobka3(832, 640);
+	Box korobka4(960, 704);
+	Player eblo("GG.png", 128, 384, 100, 129);
 	RenderWindow window(VideoMode(640, 480), "Igra");
-	View view;
+	View view = window.getDefaultView();
+	Doorper door1(576, 64);
+	Doorper door2(1088, 448);
+	Doorexit arbuz(576, 832);
+	door2.sprite.setRotation(90);
+	door2.sprite.move(64, 0);
 	eblo.sprite.setScale(0.45, 0.45);
 	eblo.w *= 0.45;
 	eblo.h *= 0.45;
@@ -28,12 +39,22 @@ int main()
 	menu(window);
 	while (window.isOpen())
 	{
+		changecamerax = 0;
+		changecameray = 0;
 		float time = clock.getElapsedTime().asMicroseconds();
 		clock.restart();
 		time = time / 500;
 		Event event;
 		eblo.x = korobka.interactionWithPlayerx(eblo.dx, eblo.dy, eblo.x, eblo.y, eblo.w, eblo.h); 
 		eblo.y= korobka.interactionWithPlayery(eblo.dx, eblo.dy, eblo.x, eblo.y, eblo.w, eblo.h);
+		eblo.x = korobka1.interactionWithPlayerx(eblo.dx, eblo.dy, eblo.x, eblo.y, eblo.w, eblo.h);
+		eblo.y = korobka1.interactionWithPlayery(eblo.dx, eblo.dy, eblo.x, eblo.y, eblo.w, eblo.h);
+		eblo.x = korobka2.interactionWithPlayerx(eblo.dx, eblo.dy, eblo.x, eblo.y, eblo.w, eblo.h);
+		eblo.y = korobka2.interactionWithPlayery(eblo.dx, eblo.dy, eblo.x, eblo.y, eblo.w, eblo.h);
+		eblo.x = korobka3.interactionWithPlayerx(eblo.dx, eblo.dy, eblo.x, eblo.y, eblo.w, eblo.h);
+		eblo.y = korobka3.interactionWithPlayery(eblo.dx, eblo.dy, eblo.x, eblo.y, eblo.w, eblo.h);
+		eblo.x = korobka4.interactionWithPlayerx(eblo.dx, eblo.dy, eblo.x, eblo.y, eblo.w, eblo.h);
+		eblo.y = korobka4.interactionWithPlayery(eblo.dx, eblo.dy, eblo.x, eblo.y, eblo.w, eblo.h);
 		while (window.pollEvent(event))
 		{
 			Event event;
@@ -70,6 +91,13 @@ int main()
 			eblo.sprite.setTextureRect(IntRect(100 * (int(CurrentFrame)), 0, 100, 129));
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////
+		changecamerax = door1.changecamerax(eblo.x, eblo.y, eblo.w, eblo.h);
+		changecameray = door2.changecameray(eblo.x, eblo.y, eblo.w, eblo.h);
+		if (door1.changeplayerx(eblo.x, eblo.y, eblo.w, eblo.h) != 0) { eblo.x = door1.changeplayerx(eblo.x, eblo.y, eblo.w, eblo.h); }
+		if (door2.changeplayery(eblo.x, eblo.y, eblo.w, eblo.h) != 0) { eblo.y = door2.changeplayery(eblo.x, eblo.y, eblo.w, eblo.h); }
+		view.move(changecamerax, changecameray);
+		arbuz.pobeda(window ,eblo.x, eblo.y, eblo.w, eblo.h);
+		
 		eblo.update(time);
 		window.clear();
 		/////////////////////////////////////////////////////////////////////////////////////////
@@ -83,8 +111,16 @@ int main()
 				window.draw(s_map);
 			}
 		//////////////////////////////////////////////////////////////////////////////////////////
+		window.draw(door1.sprite);
+		window.draw(door2.sprite);
 		window.draw(eblo.sprite);
 		window.draw(korobka.sprite);
+		window.draw(korobka1.sprite);
+		window.draw(korobka2.sprite);
+		window.draw(korobka3.sprite);
+		window.draw(korobka4.sprite);
+		window.draw(arbuz.sprite);
+		window.setView(view);
 		window.display();
 	}
 	return 0;
